@@ -22,6 +22,44 @@ echo "Installing dependencies..."
 pip install --upgrade pip -q
 pip install -r requirements.txt -q
 
-# Run the harmonograph simulator
-echo "Starting Interactive Harmonograph Simulator..."
-python draft_version/harmonograph.py "$@"
+echo ""
+echo "Please select a harmonograph architecture to simulate:"
+options=(
+    "Empirical Lateral Harmonograph (Classic)" 
+    "Pintograph & Spirograph" 
+    "Coupled Pendulums" 
+    "Chaotic Double Pendulum" 
+    "Quit"
+)
+
+select opt in "${options[@]}"; do
+    case "$REPLY" in
+        1)
+            echo "Starting Empirical Lateral Simulator..."
+            python empirical_lateral/harmonograph.py "$@"
+            break
+            ;;
+        2)
+            echo "Starting Pintograph / Spirograph Simulator..."
+            python pintograph_spirograph/simulator.py "$@"
+            break
+            ;;
+        3)
+            echo "Starting Coupled Pendulums Simulator..."
+            python coupled_pendulums/simulator.py "$@"
+            break
+            ;;
+        4)
+            echo "Starting Chaotic Double Pendulum Simulator..."
+            python chaotic_double_pendulum/simulator.py "$@"
+            break
+            ;;
+        5)
+            echo "Exiting."
+            exit 0
+            ;;
+        *)
+            echo "Invalid option. Please enter a number from 1 to 5."
+            ;;
+    esac
+done
