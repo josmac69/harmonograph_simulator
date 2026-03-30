@@ -29,6 +29,7 @@ options=(
     "Pintograph & Spirograph" 
     "Coupled Pendulums" 
     "Chaotic Double Pendulum" 
+    "Planetary Motions (Orbital Resonance)"
     "Quit"
 )
 
@@ -55,11 +56,16 @@ select opt in "${options[@]}"; do
             break
             ;;
         5)
+            echo "Starting Planetary Harmonograph Simulator..."
+            python planetary_harmonograph/simulator.py "$@"
+            break
+            ;;
+        6)
             echo "Exiting."
             exit 0
             ;;
         *)
-            echo "Invalid option. Please enter a number from 1 to 5."
+            echo "Invalid option. Please enter a number from 1 to 6."
             ;;
     esac
 done

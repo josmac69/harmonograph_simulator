@@ -26,6 +26,11 @@ This repository contains four distinct simulation architectures, each isolated i
    - **Characteristics**: A deterministically chaotic system solved using `scipy.integrate.solve_ivp`. Traces highly unpredictable scribbles that fold back on themselves violently before dissipating energy. Highly sensitive to initial release angles.
    - **Run**: `cd chaotic_double_pendulum && python simulator.py`
 
+5. **[Planetary Harmonograph (Orbital Resonance)](planetary_harmonograph/README.md)**
+   - **Type**: Kinematic orbital resonance of coplanar circular planetary orbits.
+   - **Characteristics**: Visualizes the "Dance of the Planets" by plotting a dense map of straight cords connecting the instantaneous positions of two planets. Produces distinct resonant rosettes.
+   - **Run**: `cd planetary_harmonograph && python simulator.py`
+
 ## Shared Features (Interactive GUI)
 Every simulator is built identically using standard `matplotlib`:
 - **Real-time Vectorization**: Watch the drawing update at 60Hz as you slide parameters.
