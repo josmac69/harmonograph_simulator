@@ -32,6 +32,7 @@ class PlanetaryHarmonographSimulator:
         plt.subplots_adjust(left=0.35, bottom=0.15)
         self.ax.set_facecolor('#111111')
         self.ax.axis('off')
+        self.ax.set_aspect('equal')
         
         # We'll use a LineCollection for the connecting lines
         self.collection = LineCollection([], linewidths=0.5, alpha=0.3, colors='#00ffcc')
