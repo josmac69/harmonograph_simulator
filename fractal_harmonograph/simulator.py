@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider, Button
+from matplotlib.widgets import Slider, Button, RadioButtons
 import argparse
 import time
 
@@ -13,7 +13,8 @@ class FractalHarmonographSimulator:
             'scale': kwargs.get('scale', 0.4),
             'freq_multiplier': kwargs.get('freq_multiplier', 3.0),
             'phase': kwargs.get('phase', 1.57),
-            'zoom': kwargs.get('zoom', 1.0)
+            'zoom': kwargs.get('zoom', 1.0),
+            'formula': kwargs.get('formula', 'Lissajous')
         }
         
         self.fig, self.ax = plt.subplots(figsize=(10, 8), facecolor='#111111')
@@ -41,16 +42,31 @@ class FractalHarmonographSimulator:
         scale = self.params['scale']
         freq_mult = self.params['freq_multiplier']
         phase = self.params['phase']
+        formula = self.params.get('formula', 'Lissajous')
         
-        t = np.linspace(0, 100 * np.pi, 100000)
+        # Increase the resolution significantly for deep fractal exploration
+        t = np.linspace(0, 100 * np.pi, 150000)
         X = np.zeros_like(t)
         Y = np.zeros_like(t)
         
         for k in range(depth):
             current_scale = scale ** k
             current_freq_mult = freq_mult ** k
-            X += current_scale * np.sin(freq_x * current_freq_mult * t + phase * k)
-            Y += current_scale * np.sin(freq_y * current_freq_mult * t)
+            
+            if formula == 'Lissajous':
+                X += current_scale * np.sin(freq_x * current_freq_mult * t + phase * k)
+                Y += current_scale * np.sin(freq_y * current_freq_mult * t)
+                
+            elif formula == 'Rose':
+                theta = current_freq_mult * t
+                r = current_scale * np.sin(freq_x * theta + phase * k)
+                X += r * np.cos(freq_y * theta)
+                Y += r * np.sin(freq_y * theta)
+                
+            elif formula == 'Epicycle':
+                theta = current_freq_mult * t
+                X += current_scale * (np.cos(freq_x * theta + phase * k) + np.cos(freq_y * theta))
+                Y += current_scale * (np.sin(freq_x * theta + phase * k) - np.sin(freq_y * theta))
             
         return X, Y
         
@@ -84,10 +100,22 @@ class FractalHarmonographSimulator:
             slider.valtext.set_color('white')
             slider.on_changed(self.update)
             
+        # Formula Radio Buttons
+        ax_radio = plt.axes([0.02, 0.4, 0.12, 0.2], facecolor='#222222')
+        labels = ['Lissajous', 'Rose', 'Epicycle']
+        active_idx = labels.index(self.params.get('formula', 'Lissajous'))
+        self.radios = {'formula': RadioButtons(ax_radio, labels, active=active_idx)}
+        for label in self.radios['formula'].labels: label.set_color('white')
+        self.radios['formula'].on_clicked(self.update_formula)
+            
         # Save Button
         ax_save = plt.axes([0.85, 0.02, 0.10, 0.04])
         self.btn_save = Button(ax_save, 'Save Image', hovercolor='0.9')
         self.btn_save.on_clicked(self.save_image)
+        
+    def update_formula(self, label):
+        self.params['formula'] = label
+        self.update(None)
         
     def update(self, val):
         for k in self.sliders:
@@ -124,6 +152,7 @@ def main():
     parser.add_argument('--freq_multiplier', type=float, default=3.0)
     parser.add_argument('--phase', type=float, default=1.57)
     parser.add_argument('--zoom', type=float, default=1.0)
+    parser.add_argument('--formula', type=str, default='Lissajous', choices=['Lissajous', 'Rose', 'Epicycle'])
     args = parser.parse_args()
     
     app = FractalHarmonographSimulator(**vars(args))

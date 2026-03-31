@@ -10,6 +10,12 @@ The rendering function generates continuous X/Y coordinates by accumulating wave
 
 The result is a distinct, infinite-looking fractal curve that mimics the complexities found in theoretical chaos patterns but built entirely from deterministic, clean sine waves.
 
+### Selectable Formulas
+You can toggle the core underlying geometry using the radio buttons on the left:
+1. **Lissajous**: The standard orthogonal phase calculation `(X=sin, Y=sin)`. Creates woven, grid-like harmonic shapes.
+2. **Rose**: Uses a radial accumulation `r=sin(theta)`. Synthesizes recursive flower petals growing out of the tips of primary petals.
+3. **Epicycle**: Mimics nested circles (akin to planetary epicycles or complex spirographs). Draws sharp, stellar geometric patterns rotating in symmetry `(X=cos(a)+cos(b), Y=sin(a)-sin(b))`.
+
 ## Usage
 Run the interactive simulator using:
 ```bash
