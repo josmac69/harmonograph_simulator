@@ -12,10 +12,15 @@ PLANETS = {
     'Venus':   (0.723, 0.615),
     'Earth':   (1.000, 1.000),
     'Mars':    (1.524, 1.881),
+    'Vesta':   (2.361, 3.63),
+    'Ceres':   (2.769, 4.60),
+    'Pallas':  (2.772, 4.62),
+    'Hygiea':  (3.141, 5.56),
     'Jupiter': (5.203, 11.86),
     'Saturn':  (9.537, 29.46),
     'Uranus':  (19.19, 84.01),
-    'Neptune': (30.07, 164.8)
+    'Neptune': (30.07, 164.8),
+    'Pluto':   (39.48, 247.94)
 }
 
 class PlanetaryHarmonographSimulator:
@@ -108,11 +113,11 @@ class PlanetaryHarmonographSimulator:
         # Radio buttons for planet selection
         labels = list(PLANETS.keys())
         
-        ax_radio1 = plt.axes([0.05, 0.4, 0.12, 0.4], facecolor='#222222')
+        ax_radio1 = plt.axes([0.05, 0.25, 0.12, 0.55], facecolor='#222222')
         self.radios['p1'] = RadioButtons(ax_radio1, labels, active=labels.index(self.params['p1_name']))
         for label in self.radios['p1'].labels: label.set_color('white')
         
-        ax_radio2 = plt.axes([0.20, 0.4, 0.12, 0.4], facecolor='#222222')
+        ax_radio2 = plt.axes([0.20, 0.25, 0.12, 0.55], facecolor='#222222')
         self.radios['p2'] = RadioButtons(ax_radio2, labels, active=labels.index(self.params['p2_name']))
         for label in self.radios['p2'].labels: label.set_color('white')
         
