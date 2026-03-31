@@ -66,7 +66,12 @@ class PlanetaryHarmonographSimulator:
         R2, T2 = p2
         
         total_years = self.params['years']
-        num_points = int(total_years * self.params['points_per_year'])
+        # Scale resolution with zoom to prevent jagged polygons at high zoom levels
+        zoom_factor = max(1.0, self.params.get('zoom', 1.0) / 2.0)
+        effective_pts_per_year = self.params['points_per_year'] * zoom_factor
+        num_points = int(total_years * effective_pts_per_year)
+        # Cap to prevent memory issues but allow dense resonance patterns
+        num_points = max(100, min(1000000, num_points))
         t = np.linspace(0, total_years, num_points)
         
         # Calculate instantaneous positions
@@ -151,6 +156,15 @@ class PlanetaryHarmonographSimulator:
         
         # Update line collection
         self.collection.set_segments(segments)
+        
+        # Adjust line visual density based on years simulated, to prevent solid blocks of white/cyan
+        # when simulating hundreds of years of orbits
+        years = self.params.get('years', 8.0)
+        density_ratio = max(1.0, years / 8.0)
+        new_alpha = max(0.02, 0.3 / (density_ratio ** 0.5))
+        new_lw = max(0.05, 0.5 / (density_ratio ** 0.5))
+        self.collection.set_alpha(new_alpha)
+        self.collection.set_linewidth(new_lw)
         
         # Update orbit rings
         self.p1_orbit.set_data(o1[0], o1[1])
