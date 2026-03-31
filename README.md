@@ -31,6 +31,11 @@ This repository contains four distinct simulation architectures, each isolated i
    - **Characteristics**: Visualizes the "Dance of the Planets" by plotting a dense map of straight cords connecting the instantaneous positions of two planets. Produces distinct resonant rosettes.
    - **Run**: `cd planetary_harmonograph && python simulator.py`
 
+6. **[Fractal Harmonograph](fractal_harmonograph/README.md)**
+   - **Type**: Recursively layered trigonometric equations.
+   - **Characteristics**: Uses scale, frequency multipliers, and phase shifting to generate complex fractal-like infinite patterns. Very fast geometric generation.
+   - **Run**: `cd fractal_harmonograph && python simulator.py`
+
 ## Shared Features (Interactive GUI)
 Every simulator is built identically using standard `matplotlib`:
 - **Real-time Vectorization**: Watch the drawing update at 60Hz as you slide parameters.

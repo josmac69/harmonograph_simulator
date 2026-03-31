@@ -30,6 +30,7 @@ options=(
     "Coupled Pendulums" 
     "Chaotic Double Pendulum" 
     "Planetary Motions (Orbital Resonance)"
+    "Fractal Harmonograph"
     "Quit"
 )
 
@@ -61,11 +62,16 @@ select opt in "${options[@]}"; do
             break
             ;;
         6)
+            echo "Starting Fractal Harmonograph Simulator..."
+            python fractal_harmonograph/simulator.py "$@"
+            break
+            ;;
+        7)
             echo "Exiting."
             exit 0
             ;;
         *)
-            echo "Invalid option. Please enter a number from 1 to 6."
+            echo "Invalid option. Please enter a number from 1 to 7."
             ;;
     esac
 done

@@ -15,7 +15,8 @@ python simulator.py
 Use the GUI controls to tune:
 - **Planet 1 & Planet 2**: Radio buttons to select the two planetary bodies you wish to simulate.
 - **Years**: The total number of Earth-years to simulate. (For outer planets like Neptune, you may need to increase this significantly!).
-- **Res (pts/yr)**: The resolution or density of the drawing. Determines how many connecting lines are drawn per simulated Earth-year. 
+- **Res (pts/yr)**: The resolution or density of the drawing. Determines how many connecting lines are drawn per simulated Earth-year.
+- **Zoom**: Allows you to zoom into the geometric figure. The simulation viewport is delineated by a white quadratic border. When you click "Save Image", only the zoomed-in portion strictly inside this border is saved to the high-resolution output file. This is particularly useful when combining planets that are far apart (like Mercury and Jupiter) where the intricate part in the middle would otherwise be too small to see.
 
 ## Visual Characteristics
 For perfectly resonant planets, the geometry closes into striking rosettes. For example, the famous Earth-Venus pair completes a distinct 5-petaled flower over exactly 8 Earth years, mirroring their 8:13 orbital resonance. Combining vastly disparate planets (like Mercury and Neptune) results in a dense annulus rather than a simple flower.
