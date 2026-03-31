@@ -15,6 +15,8 @@ You can toggle the core underlying geometry using the radio buttons on the left:
 1. **Lissajous**: The standard orthogonal phase calculation `(X=sin, Y=sin)`. Creates woven, grid-like harmonic shapes.
 2. **Rose**: Uses a radial accumulation `r=sin(theta)`. Synthesizes recursive flower petals growing out of the tips of primary petals.
 3. **Epicycle**: Mimics nested circles (akin to planetary epicycles or complex spirographs). Draws sharp, stellar geometric patterns rotating in symmetry `(X=cos(a)+cos(b), Y=sin(a)-sin(b))`.
+4. **Torus**: A 2D projection of a mathematical torus knot. Draws overlapping concentric loops wrapped around a circular center.
+5. **Butterfly**: A modified generalized butterfly curve `r=exp(cos(theta))-2*cos(theta)`. This rapidly maps beautiful winged rosettes folding in on each other seamlessly.
 
 ## Usage
 Run the interactive simulator using:

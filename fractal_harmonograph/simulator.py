@@ -67,6 +67,20 @@ class FractalHarmonographSimulator:
                 theta = current_freq_mult * t
                 X += current_scale * (np.cos(freq_x * theta + phase * k) + np.cos(freq_y * theta))
                 Y += current_scale * (np.sin(freq_x * theta + phase * k) - np.sin(freq_y * theta))
+                
+            elif formula == 'Torus':
+                theta = current_freq_mult * t
+                # 2D projection of a Torus Knot
+                r = current_scale * (np.cos(freq_y * theta) + 2.0)
+                X += r * np.cos(freq_x * theta + phase * k)
+                Y += r * np.sin(freq_x * theta + phase * k)
+                
+            elif formula == 'Butterfly':
+                theta = current_freq_mult * t
+                # Modified generalized butterfly curve
+                r = current_scale * (np.exp(np.cos(freq_x * theta)) - 2.0 * np.cos(freq_y * theta))
+                X += r * np.cos(theta + phase * k)
+                Y += r * np.sin(theta + phase * k)
             
         return X, Y
         
@@ -101,8 +115,8 @@ class FractalHarmonographSimulator:
             slider.on_changed(self.update)
             
         # Formula Radio Buttons
-        ax_radio = plt.axes([0.02, 0.4, 0.12, 0.2], facecolor='#222222')
-        labels = ['Lissajous', 'Rose', 'Epicycle']
+        ax_radio = plt.axes([0.02, 0.45, 0.12, 0.3], facecolor='#222222')
+        labels = ['Lissajous', 'Rose', 'Epicycle', 'Torus', 'Butterfly']
         active_idx = labels.index(self.params.get('formula', 'Lissajous'))
         self.radios = {'formula': RadioButtons(ax_radio, labels, active=active_idx)}
         for label in self.radios['formula'].labels: label.set_color('white')
@@ -152,7 +166,7 @@ def main():
     parser.add_argument('--freq_multiplier', type=float, default=3.0)
     parser.add_argument('--phase', type=float, default=1.57)
     parser.add_argument('--zoom', type=float, default=1.0)
-    parser.add_argument('--formula', type=str, default='Lissajous', choices=['Lissajous', 'Rose', 'Epicycle'])
+    parser.add_argument('--formula', type=str, default='Lissajous', choices=['Lissajous', 'Rose', 'Epicycle', 'Torus', 'Butterfly'])
     args = parser.parse_args()
     
     app = FractalHarmonographSimulator(**vars(args))
