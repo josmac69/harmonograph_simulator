@@ -25,13 +25,19 @@ class PlanetaryHarmonographSimulator:
             'p2_name': kwargs.get('p2', 'Venus'),
             'years': kwargs.get('years', 8.0),
             'points_per_year': kwargs.get('res', 100),
+            'zoom': kwargs.get('zoom', 1.0),
         }
         
         self.fig, self.ax = plt.subplots(figsize=(10, 8), facecolor='#111111')
         self.fig.canvas.manager.set_window_title('Planetary Harmonograph / Orbital Resonance')
         plt.subplots_adjust(left=0.35, bottom=0.15)
         self.ax.set_facecolor('#111111')
-        self.ax.axis('off')
+        self.ax.set_xticks([])
+        self.ax.set_yticks([])
+        for spine in self.ax.spines.values():
+            spine.set_edgecolor('white')
+            spine.set_linewidth(1.0)
+            spine.set_visible(True)
         self.ax.set_aspect('equal')
         
         # We'll use a LineCollection for the connecting lines
@@ -85,6 +91,9 @@ class PlanetaryHarmonographSimulator:
         axcolor = 'darkgray'
         
         # Sliders
+        ax_zoom = plt.axes([0.35, 0.09, 0.45, 0.02], facecolor=axcolor)
+        self.sliders['zoom'] = Slider(ax_zoom, 'Zoom', 1.0, 50.0, valinit=self.params.get('zoom', 1.0), valstep=0.1, color='#00ffcc')
+
         ax_years = plt.axes([0.35, 0.05, 0.45, 0.02], facecolor=axcolor)
         self.sliders['years'] = Slider(ax_years, 'Years', 1, 300, valinit=self.params['years'], valstep=1, color='#00ffcc')
         
@@ -128,6 +137,8 @@ class PlanetaryHarmonographSimulator:
         self.update(None)
         
     def update(self, val):
+        if 'zoom' in self.sliders:
+            self.params['zoom'] = self.sliders['zoom'].val
         self.params['years'] = self.sliders['years'].val
         self.params['points_per_year'] = self.sliders['points_per_year'].val
             
@@ -141,7 +152,7 @@ class PlanetaryHarmonographSimulator:
         self.p2_orbit.set_data(o2[0], o2[1])
         
         # Dynamic resizing based on maximum orbital radius
-        limit = max_radius * 1.05
+        limit = (max_radius * 1.05) / self.params.get('zoom', 1.0)
         self.ax.set_xlim(-limit, limit)
         self.ax.set_ylim(-limit, limit)
         self.fig.canvas.draw_idle()
@@ -149,7 +160,7 @@ class PlanetaryHarmonographSimulator:
     def save_image(self, event):
         filename = f"planets_{self.params['p1_name']}_{self.params['p2_name']}_{int(time.time())}.png"
         extent = self.ax.get_window_extent().transformed(self.fig.dpi_scale_trans.inverted())
-        extent = extent.expanded(1.1, 1.1)
+        # Do not expand the extent to save only what is inside the graphical borders
         self.fig.savefig(filename, bbox_inches=extent, facecolor='#111111', dpi=300)
         print(f"Saved planetary artwork to {filename}")
 
@@ -161,6 +172,7 @@ def main():
     parser.add_argument('--p1', type=str, default='Earth', help='Planet 1')
     parser.add_argument('--p2', type=str, default='Venus', help='Planet 2')
     parser.add_argument('--years', type=float, default=8.0, help='Total simulated years')
+    parser.add_argument('--zoom', type=float, default=1.0, help='Initial zoom factor')
     args = parser.parse_args()
     
     app = PlanetaryHarmonographSimulator(**vars(args))
